@@ -1,8 +1,7 @@
-
 # 🌐 Country Explorer
 
 A React + Vite application to explore countries around the world.  
-Features include Google Sign-In, favorites persisted in Firebase Firestore, search & filter via REST Countries API, and a responsive Tailwind CSS UI.  
+Features include Google Sign-In, favorites persisted in Firebase Firestore, search & filter via the REST Countries API, and a responsive Tailwind CSS UI.  
 Live Demo: https://country-app-23fc6.web.app
 
 ---
@@ -73,10 +72,9 @@ The app is deployed at:
    ```bash
    git clone https://github.com/SE1020-IT2070-OOP-DSA-25/af-2-thyagaalwis.git
    cd af-2-thyagaalwis/Frontend
-````
+   ```
 
-2. **Install dependencies**
-
+2. **Install dependencies**  
    ```bash
    npm install
    ```
@@ -141,18 +139,15 @@ Then open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ## ✅ Testing
 
-* **Run all tests once:**
-
+- **Run all tests once:**  
   ```bash
   npm run test
   ```
-* **Watch mode:**
-
+- **Watch mode:**  
   ```bash
   npm run test:watch
   ```
-* **Coverage report:**
-
+- **Coverage report:**  
   ```bash
   npm run coverage
   ```
@@ -171,20 +166,20 @@ Optimized files are output to `dist/`.
 
 ## 🛳 Deployment
 
-1. **Login & init** (only first time):
-
+1. **Login & init** (first time only):  
    ```bash
    firebase login
    firebase init hosting
    # Select your project, set `dist` as public, enable SPA rewrites
    ```
-2. **Deploy**:
 
+2. **Deploy:**  
    ```bash
    npm run build
    firebase deploy --only hosting
    ```
-3. **Live URL**:
+
+3. **Live URL:**  
    [https://country-app-23fc6.web.app](https://country-app-23fc6.web.app)
 
 ---
@@ -216,11 +211,11 @@ af-2-thyagaalwis/
 
 ## 🔮 Future Improvements
 
-* Full Firestore integration for real-time sync
-* Language filter (using `/lang/{code}`)
-* Dark mode toggle
-* Error & loading states for all API calls
-* Integration tests for user flows
+- Full Firestore integration for real-time sync
+- Language filter (using `/lang/{code}`)
+- Dark mode toggle
+- Error & loading states for all API calls
+- Integration tests for user flows
 
 ---
 
@@ -228,9 +223,9 @@ af-2-thyagaalwis/
 
 Please refer to `REPORT.md` for:
 
-* **Chosen endpoints**: `/all`, `/name`, `/region`, `/alpha`
-* **Challenges & Solutions**
-* **Testing strategy**
-* **Deployment notes**
+- **Chosen endpoints**: `/all`, `/name`, `/region`, `/alpha`
+- **Challenges & Solutions**
+- **Testing strategy**
+- **Deployment notes**
 
 ---
