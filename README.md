@@ -221,11 +221,6 @@ af-2-thyagaalwis/
 
 ## 📄 Assignment Report
 
-Please refer to `REPORT.md` for:
-
-- **Chosen endpoints**: `/all`, `/name`, `/region`, `/alpha`
-- **Challenges & Solutions**
-- **Testing strategy**
-- **Deployment notes**
+[Download the full report (PDF)](./Assignment%20Report.pdf)
 
 ---
