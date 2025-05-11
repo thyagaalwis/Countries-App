@@ -1,41 +1,65 @@
-import React, { useState } from 'react';
-import CountryCard from '../components/CountryCard';
-import Pagination from '../components/Pagination';
+import React, { useState, useMemo, useEffect } from 'react';
+import { useSearchParams }    from 'react-router-dom';
+import CountryCard            from '../components/CountryCard';
+import Pagination             from '../components/Pagination';
+import SearchBar              from '../components/SearchBar';
 
 export default function Home({ countries, favorites, toggleFavorite }) {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [region, setRegion] = useState('');
-  const [currentPage, setCurrentPage] = useState(1);
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  // ─── 1) bootstrap from URL ───────────────────────────────
+  const initialQ      = searchParams.get('q')      || '';
+  const initialRegion = searchParams.get('region') || '';
+  const initialPage   = parseInt(searchParams.get('page') || '1', 10);
+
+  // ─── 2) local state seeded from URL ──────────────────────
+  const [searchTerm,  setSearchTerm]  = useState(initialQ);
+  const [region,      setRegion]      = useState(initialRegion);
+  const [currentPage, setCurrentPage] = useState(initialPage);
   const itemsPerPage = 12;
 
-  const filtered = countries.filter((c) => {
-    const matchesSearch = c.name.common.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesRegion = region ? c.region === region : true;
-    return matchesSearch && matchesRegion;
-  });
+  // ─── 3) keep URL in sync whenever any of these change ─────
+  useEffect(() => {
+    const params = new URLSearchParams();
+    if (searchTerm)    params.set('q',      searchTerm);
+    if (region)        params.set('region', region);
+    if (currentPage > 1) params.set('page',   currentPage);
+    setSearchParams(params, { replace: true });
+  }, [searchTerm, region, currentPage, setSearchParams]);
 
-  const totalPages = Math.ceil(filtered.length / itemsPerPage);
-  const start = (currentPage - 1) * itemsPerPage;
-  const paginatedCountries = filtered.slice(start, start + itemsPerPage);
+  // ─── 4) filter + paginate ────────────────────────────────
+  const filtered = useMemo(() => {
+    return countries
+      .filter(c =>
+        c.name.common.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+      .filter(c => region ? c.region === region : true);
+  }, [countries, searchTerm, region]);
+
+  const totalPages = Math.max(1, Math.ceil(filtered.length / itemsPerPage));
+  const start      = (currentPage - 1) * itemsPerPage;
+  const pageItems  = filtered.slice(start, start + itemsPerPage);
+
+  // ─── 5) handlers that reset page back to 1 on new search/region ───
+  const handleSearch = q => {
+    setSearchTerm(q);
+    setCurrentPage(1);
+  };
+  const handleRegion = r => {
+    setRegion(r);
+    setCurrentPage(1);
+  };
 
   return (
-    <div>
+    <div className="px-4">
       <div className="flex flex-col md:flex-row justify-center gap-4 mb-6">
-        <input
-          type="text"
-          placeholder="Search for a country..."
-          className="px-4 py-2 rounded bg-gray-800 placeholder-gray-400 text-white w-full md:w-1/2"
-          onChange={(e) => {
-            setSearchTerm(e.target.value);
-            setCurrentPage(1);
-          }}
-        />
+        {/* controlled, URL-synced search bar */}
+        <SearchBar onSearch={handleSearch} value={searchTerm} />
+
         <select
+          value={region}
+          onChange={e => handleRegion(e.target.value)}
           className="px-4 py-2 rounded bg-gray-800 text-white w-full md:w-1/4"
-          onChange={(e) => {
-            setRegion(e.target.value);
-            setCurrentPage(1);
-          }}
         >
           <option value="">Filter by Region</option>
           <option value="Africa">Africa</option>
@@ -47,7 +71,7 @@ export default function Home({ countries, favorites, toggleFavorite }) {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {paginatedCountries.map((country) => (
+        {pageItems.map(country => (
           <CountryCard
             key={country.cca3}
             country={country}
@@ -61,7 +85,7 @@ export default function Home({ countries, favorites, toggleFavorite }) {
         <Pagination
           currentPage={currentPage}
           totalPages={totalPages}
-          onPageChange={(page) => setCurrentPage(page)}
+          onPageChange={p => setCurrentPage(p)}
         />
       </div>
     </div>

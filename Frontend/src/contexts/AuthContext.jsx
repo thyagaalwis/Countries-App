@@ -1,4 +1,3 @@
-// src/contexts/AuthContext.jsx
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { auth, googleProvider } from "../firebase";
 import {
@@ -11,20 +10,22 @@ const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
+  const [authLoading, setAuthLoading] = useState(true);
 
-  // subscribe to Firebase auth state
+  // subscribe to Firebase auth state, then flip loading → false
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, u => {
+    const unsubscribe = onAuthStateChanged(auth, (u) => {
       setUser(u);
+      setAuthLoading(false);
     });
     return unsubscribe;
   }, []);
 
   const loginWithGoogle = () => signInWithPopup(auth, googleProvider);
-  const logout = () => signOut(auth);
+  const logout           = () => signOut(auth);
 
   return (
-    <AuthContext.Provider value={{ user, loginWithGoogle, logout }}>
+    <AuthContext.Provider value={{ user, authLoading, loginWithGoogle, logout }}>
       {children}
     </AuthContext.Provider>
   );
