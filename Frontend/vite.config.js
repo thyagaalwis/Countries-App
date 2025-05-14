@@ -7,16 +7,20 @@ export default defineConfig({
   server: {
     port: 3000,
   },
-  // —— Add this block to enable Vitest ——
   test: {
-    globals: true,                    // allow describe/it without imports
-    environment: 'jsdom',             // simulate a browser DOM
-    setupFiles: './src/setupTests.js',// load jest-dom matchers
+    // allow describe/it/globals without explicit imports
+    globals: true,
+
+    // simulate a browser DOM
+    environment: 'jsdom',
+
+    // load any setup helpers (e.g. jest-dom matchers)
+    setupFiles: './src/setupTests.js',
+
+    // include all .test. or .spec. files under src/tests with js/ts/jsx/tsx
     include: [
-      'src/tests/App.test.jsx',
-      'src/tests/CountryDetails.test.jsx',
-      'src/tests/CountryList.test.jsx',
-      'src/tests/Login.test.jsx',
+      'src/tests/**/*.test.{js,jsx,ts,tsx}',
+      'src/tests/**/*.spec.{js,jsx,ts,tsx}'
     ],
   },
 });

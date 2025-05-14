@@ -1,41 +1,34 @@
 // src/tests/App.test.jsx
-import React from "react";
-import { render, screen } from "@testing-library/react";
-import { vi } from "vitest";
+import React from 'react'
+import { render, screen, waitFor } from '@testing-library/react'
+import App from '../App'
+import { AuthProvider } from '../contexts/AuthContext'
+import * as restAPI from '../api/restCountries'
+import { describe, it, expect, beforeEach, vi } from 'vitest'
 
-import App from "../App.jsx";
+// 1) Mock out the real fetchAllCountries import
+vi.mock('../api/restCountries', () => ({
+  fetchAllCountries: vi.fn()
+}))
 
-// 1) Mock AuthContext so AuthProvider + useAuth exist
-vi.mock("../contexts/AuthContext", async (importOriginal) => {
-  const actual = await importOriginal();
-  return {
-    ...actual,
-    AuthProvider: ({ children }) => <>{children}</>,
-    useAuth: () => ({
-      user: null,
-      authLoading: false,
-      loginWithGoogle: vi.fn(),
-      logout: vi.fn(),
-    }),
-  };
-});
+describe('App', () => {
+  beforeEach(() => {
+    // Resolve immediately with an empty array—no async state update will fire after mount
+    restAPI.fetchAllCountries.mockResolvedValue([])
+  })
 
-// 2) Mock fetchAllCountries so no real network call
-vi.mock("../api/restCountries", () => ({
-  fetchAllCountries: vi.fn().mockResolvedValue([]),
-}));
+  it('renders the main heading without act(...) warnings', async () => {
+    render(
+      <AuthProvider>
+        <App />
+      </AuthProvider>
+    )
 
-// 3) Mock useFavorites so no Firebase/localStorage
-vi.mock("../hooks/useFavorites", () => ({
-  useFavorites: () => [[], vi.fn()],
-}));
-
-describe("App", () => {
-  it("renders the main heading", () => {
-    // NO <BrowserRouter> wrapper here—App already includes its own Router
-    render(<App />);
-    expect(
-      screen.getByRole("heading", { name: /where in the world\?/i })
-    ).toBeInTheDocument();
-  });
-});
+    // 2) waitFor wraps its callback in act(), so this covers any pending updates
+    await waitFor(() => {
+      expect(
+        screen.getByRole('heading', { name: /where in the world\?/i })
+      ).toBeInTheDocument()
+    })
+  })
+})
