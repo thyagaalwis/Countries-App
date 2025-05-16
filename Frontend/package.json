@@ -4,34 +4,33 @@
     "type": "module",
     "description": "React app for exploring countries using REST Countries API - SE3040 Assignment",
     "scripts": {
-      "dev": "vite",
-      "build": "vite build",
-      "preview": "vite preview",
-      "test": "vitest",
-      "test:watch": "vitest --watch"
+        "dev": "vite",
+        "build": "vite build",
+        "preview": "vite preview",
+        "test": "vitest",
+        "test:watch": "vitest --watch"
     },
     "dependencies": {
-      "firebase": "^11.6.1",
-      "react": "^18.2.0",
-      "react-dom": "^18.2.0",
-      "react-router-dom": "^7.5.2"
+        "firebase": "^11.7.3",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
+        "react-router-dom": "^7.5.2"
     },
     "devDependencies": {
-      "@testing-library/jest-dom": "^6.6.3",
-      "@testing-library/react": "^14.3.1",
-      "@testing-library/user-event": "^14.6.1",
-      "@vitejs/plugin-react": "^4.1.0",
-      "autoprefixer": "^10.4.16",
-      "identity-obj-proxy": "^3.0.0",
-      "jsdom": "^26.1.0",
-      "postcss": "^8.4.24",
-      "tailwindcss": "^3.4.1",
-      "vite": "^5.0.8",
-      "vitest": "^3.1.2"
+        "@testing-library/jest-dom": "^6.6.3",
+        "@testing-library/react": "^14.3.1",
+        "@testing-library/user-event": "^14.6.1",
+        "@vitejs/plugin-react": "^4.1.0",
+        "autoprefixer": "^10.4.16",
+        "identity-obj-proxy": "^3.0.0",
+        "jsdom": "^26.1.0",
+        "postcss": "^8.4.24",
+        "tailwindcss": "^3.4.1",
+        "vite": "^5.0.8",
+        "vitest": "^3.1.2"
     },
     "browserslist": [
-      "defaults",
-      "not IE 11"
+        "defaults",
+        "not IE 11"
     ]
-  }
-  
+}
