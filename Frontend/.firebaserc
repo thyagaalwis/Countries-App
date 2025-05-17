@@ -1,5 +1,7 @@
 {
   "projects": {
     "default": "country-app-23fc6"
-  }
+  },
+  "targets": {},
+  "etags": {}
 }
